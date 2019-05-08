@@ -4,7 +4,7 @@ const router = express.Router();
 const Issue = require("../models/Issue");
 const Project = require("../models/Project");
 
-router.post("/tasks", (req, res) => {
+router.post("/issues", (req, res) => {
   Issue.create({
     title: req.body.title,
     description: req.body.description,
@@ -25,6 +25,7 @@ router.post("/tasks", (req, res) => {
       res.json(error);
     });
 });
+
 router.get("/issues/:id", (req, res) => {
   Issue.findById(req.params.id)
     .populate("project")
