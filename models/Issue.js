@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 // Priority: based on the importance and urgency of resolving an error
 // Severity: based on the degree of the error impact on the operation of the system
-const issueSchma = new Schema(
+const issueSchema = new Schema(
   {
     title: {
       type: String,
@@ -50,6 +50,6 @@ const issueSchma = new Schema(
   },
 )
 
-const Issue = mongoose.model('Issue', issueSchma)
+const Issue = mongoose.model('Issue', issueSchema)
 
 module.exports = Issue
