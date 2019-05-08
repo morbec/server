@@ -6,7 +6,7 @@ const Project = require("../models/Project");
 
 router.post("/projects", (req, res) => {
   Project.create({
-    title: req.body.title,
+    name: req.body.name,
     description: req.body.description,
     owner: req.user._id,
     issue: []

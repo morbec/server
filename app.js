@@ -61,10 +61,20 @@ app.use(
   }),
 )
 
-const index = require('./routes/index')
-app.use('/', index)
+const index = require("./routes/index");
+app.use("/", index);
 
-const authRoutes = require('./routes/auth')
-app.use('/auth', authRoutes)
+const auth = require("./routes/auth");
+app.use("/api", auth);
+
+const projects = require("./routes/projects");
+app.use("/api", projects);
+
+const issues = require("./routes/issues");
+app.use("/api", issues);
+
+const comments = require("./routes/comments");
+app.use("/api", comments);
+
 
 module.exports = app
