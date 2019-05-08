@@ -35,7 +35,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 })
 
 router.post('/signup', async (req, res) => {
-  const { username, password, campus, course } = req.body
+  const { username, password, email, firstName, lastName, avatar, projects  } = req.body
   if (username === '' || password === '') {
     return res.status(422).json({ message: 'Indicate username and password' })
   }
@@ -51,8 +51,11 @@ router.post('/signup', async (req, res) => {
   const newUser = await User.create({
     username: username,
     password: hashPass,
-    campus: campus,
-    course: course,
+    email: email,
+    firstName: firstName,
+    lastName:lastName,
+    avatar: avatar,
+    projects: projects 
   })
   req.login(newUser, () => {
     return res.status(200).json(newUser)
@@ -61,8 +64,8 @@ router.post('/signup', async (req, res) => {
 
 router.post('/edit/:_id', async (req, res) => {
   const { _id } = req.params
-  const { username, campus, course } = req.body
-  const updateUser = await User.findByIdAndUpdate(_id, { username, campus, course }, { new: true })
+  const { username, email, firstName, lastName, avatar, projects  } = req.body
+  const updateUser = await User.findByIdAndUpdate(_id, { username, email, firstName, lastName, avatar, projects  }, { new: true })
   return res.status(200).json(updateUser)
 })
 

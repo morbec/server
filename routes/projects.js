@@ -38,3 +38,4 @@ router.get("/projects/:id", (req, res) => {
       res.json(error);
     });
 });
+module.exports = router

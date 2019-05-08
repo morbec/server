@@ -43,3 +43,4 @@ router.get("/issues/:id", (req, res) => {
       res.json(error);
     });
 });
+module.exports = router
