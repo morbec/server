@@ -7,20 +7,7 @@ const router = express.Router()
 // Bcrypt to encrypt passwords
 const bcryptSalt = 10
 
-// router.post(
-//   '/login',
-//   passport.authenticate('local', {
-//     successRedirect: '/',
-//     failureRedirect: '/auth/login',
-//     // failureFlash: true,
-//     passReqToCallback: true,
-//   }),
-// )
-
-// TODO: FIX Mongoose deprecated warnings
-
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  // triggered after successful authenticate()
   req.login(req.user, (err) => {
     if (err)
       return res.status(500).json({
@@ -29,13 +16,12 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     return res.json(req.user)
   }),
     (error, req, res) => {
-      // triggered after failed authenticate()
       return res.status(401).json(error)
     }
 })
 
 router.post('/signup', async (req, res) => {
-  const { username, password, email, firstName, lastName, avatar, projects  } = req.body
+  const { username, password, email, firstName, lastName, avatar, projects } = req.body
   if (username === '' || password === '') {
     return res.status(422).json({ message: 'Indicate username and password' })
   }
@@ -53,9 +39,9 @@ router.post('/signup', async (req, res) => {
     password: hashPass,
     email: email,
     firstName: firstName,
-    lastName:lastName,
+    lastName: lastName,
     avatar: avatar,
-    projects: projects 
+    projects: projects,
   })
   req.login(newUser, () => {
     return res.status(200).json(newUser)
@@ -64,16 +50,18 @@ router.post('/signup', async (req, res) => {
 
 router.post('/edit/:_id', async (req, res) => {
   const { _id } = req.params
-  const { username, email, firstName, lastName, avatar, projects  } = req.body
-  const updateUser = await User.findByIdAndUpdate(_id, { username, email, firstName, lastName, avatar, projects  }, { new: true })
+  const { username, email, firstName, lastName, avatar, projects } = req.body
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    { username, email, firstName, lastName, avatar, projects },
+    { new: true },
+  )
   return res.status(200).json(updateUser)
 })
 
 const uploader = require('../config/cloudinary-setup')
 router.post('/upload', uploader.single('image'), (req, res) => {
-  // console.log(req.user)
   if (!req.file) {
-    // next(new Error('No file uploaded'))
     return res.status(500).json({ message: 'No file uploaded' })
   }
 

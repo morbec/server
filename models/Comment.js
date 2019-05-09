@@ -14,8 +14,7 @@ const commentSchema = new Schema(
     },
     issue: {
       type: Schema.Types.ObjectId,
-      ref: 'Issue'
-      /* required: true, */
+      ref: 'Issue',
     },
   },
   {

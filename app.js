@@ -17,11 +17,9 @@ const log = new Loggerr()
 mongoose
   .connect('mongodb://localhost/tracker', { useNewUrlParser: true, useCreateIndex: true })
   .then((x) => {
-    // console.log(` Database name: "${x.connections[0].name}"`)
     log.info('Connected to Mongo!', {
       database_name: `${x.connections[0].name}`,
     })
-    // fasdfadf
   })
   .catch((err) => {
     log.error(new Error(`Error connecting to mongo: ${err}`))
@@ -56,25 +54,24 @@ require('./passport')(app)
 // CORS settings to allow cross-oring interacton
 app.use(
   cors({
-    origin: 'http://localhost:5000',
+    origin: 'http://localhost:3000',
     credentials: true,
   }),
 )
 
-const index = require("./routes/index");
-app.use("/", index);
+const index = require('./routes/index')
+app.use('/', index)
 
-const auth = require("./routes/auth");
-app.use("/api", auth);
+const auth = require('./routes/auth')
+app.use('/api', auth)
 
-const projects = require("./routes/projects");
-app.use("/api", projects);
+const projects = require('./routes/projects')
+app.use('/api', projects)
 
-const issues = require("./routes/issues");
-app.use("/api", issues);
+const issues = require('./routes/issues')
+app.use('/api', issues)
 
-const comments = require("./routes/comments");
-app.use("/api", comments);
-
+const comments = require('./routes/comments')
+app.use('/api', comments)
 
 module.exports = app

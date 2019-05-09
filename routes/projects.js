@@ -1,30 +1,31 @@
-const express = require("express");
-const router = express.Router();
-const Project = require("../models/Project");
+const express = require('express')
+const router = express.Router()
+const Project = require('../models/Project')
 
-router.post("/projects", (req, res) => {
+router.post('/projects', (req, res) => {
   Project.create({
     name: req.body.name,
     description: req.body.description,
     owner: req.user._id,
-    issue: []
+    issue: [],
   })
-    .then(response => {
-      res.json(response);
+    .then((response) => {
+      res.json(response)
     })
-    .catch(error => {
-      res.json(error);
-    });
-});
+    .catch((error) => {
+      res.json(error)
+    })
+})
 
-router.get("/projects/:id", (req, res) => {
+router.get('/projects/:id', (req, res) => {
   Project.findById(req.params.id)
-    .populate("issues")
-    .then(project => {
-      res.json(project);
+    .populate('issues')
+    .then((project) => {
+      res.json(project)
     })
-    .catch(error => {
-      res.json(error);
-    });
-});
+    .catch((error) => {
+      res.json(error)
+    })
+})
+
 module.exports = router
