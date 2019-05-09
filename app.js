@@ -15,7 +15,7 @@ var Loggerr = require('loggerr')
 const log = new Loggerr()
 
 mongoose
-  .connect('mongodb://localhost/portfolio', { useNewUrlParser: true, useCreateIndex: true })
+  .connect('mongodb://localhost/tracker', { useNewUrlParser: true, useCreateIndex: true })
   .then((x) => {
     // console.log(` Database name: "${x.connections[0].name}"`)
     log.info('Connected to Mongo!', {
@@ -56,15 +56,25 @@ require('./passport')(app)
 // CORS settings to allow cross-oring interacton
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:5000',
     credentials: true,
   }),
 )
 
-const index = require('./routes/index')
-app.use('/', index)
+const index = require("./routes/index");
+app.use("/", index);
 
-const authRoutes = require('./routes/auth')
-app.use('/auth', authRoutes)
+const auth = require("./routes/auth");
+app.use("/api", auth);
+
+const projects = require("./routes/projects");
+app.use("/api", projects);
+
+const issues = require("./routes/issues");
+app.use("/api", issues);
+
+const comments = require("./routes/comments");
+app.use("/api", comments);
+
 
 module.exports = app
