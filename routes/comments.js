@@ -1,30 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const Project = require("../models/Project");
+const Issue = require("../models/Issue");
+const Comment = require("../models/Comment");
+
 
 router.post("/comments", (req, res) => {
-  Comment.create({
-    content: req.body.content,
-    date: req.body.date,
-    user: req.user._id,
-    issue: req.body.issue
-  }).save()
-    .then(response => {
-      res.json(response);
-    })
-    .catch(error => {
-      res.json(error);
-    });
-});
+  const {content, date, issue} = req.body
+  const user = req.user._id
+ Comment.create({content, date, user})
+  .then(comment => {
+    res.json(comment)
+   Issue.findOneAndUpdate({_id: issue}, 
+     { $push: { comments: comment._id }})
+     .catch(error => {
+           res.json(error);
+         });
+     })
+   })
 
-router.get("/comments", (req, res) => {
-  Project.find({})
-    .populate("issue")
-    .then(comments => {
-      res.json(comments);
-    })
-    .catch(error => {
-      res.json(error);
-    });
-});
+   router.get("/comments/:id", (req, res) => {
+    Comment.findById(req.params.id)
+      .populate("issue")
+      .then(comment => {
+        res.json(comment);
+      })
+      .catch(error => {
+        res.json(error);
+      });
+  });
 module.exports = router

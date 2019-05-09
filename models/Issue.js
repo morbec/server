@@ -10,6 +10,11 @@ const issueSchema = new Schema(
       required: true,
       unique: true,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     description: { type: String },
     created: { type: Date },
     dueDate: { type: Date },
@@ -39,7 +44,7 @@ const issueSchema = new Schema(
     severity: {
       type: String,
       enum: [ 'critical', 'major', 'minor', 'low-impact' ],
-      default: [ 'minor' ],
+      default: 'minor',
     },
   },
   {
