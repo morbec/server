@@ -8,15 +8,15 @@ const router = express.Router()
 const bcryptSalt = 10
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
-  req.login(req.user, (err) => {
-    if (err)
+  req.login(req.user, (error) => {
+    if (error)
       return res.status(500).json({
         message: 'Something went wrong in the authentication process',
       })
     return res.json(req.user)
   }),
     (error, req, res) => {
-      return res.status(401).json(error)
+      return res.status(401).json({ message: `Database error: ${error}` })
     }
 })
 
@@ -69,8 +69,8 @@ router.post('/upload', uploader.single('image'), (req, res) => {
     .then((udpatedUser) => {
       return res.json(udpatedUser)
     })
-    .catch((err) => {
-      return res.status(500).json({ message: `Error updating user => ${err}` })
+    .catch((error) => {
+      return res.status(500).json({ message: `Error updating user => ${error}` })
     })
 })
 

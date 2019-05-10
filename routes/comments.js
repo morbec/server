@@ -11,7 +11,7 @@ router.post('/comments', (req, res) => {
     Issue.findOneAndUpdate({ _id: issueId }, { $push: { comments: comment._id } }, { new: true })
       .then((updatedIssue) => res.status(200).json(updatedIssue))
       .catch((error) => {
-        res.json(error)
+        res.status(error.code).json({ message: `Database error: ${error}` })
       })
   })
 })
@@ -23,7 +23,7 @@ router.get('/comments/:id', (req, res) => {
       res.json(comment)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 

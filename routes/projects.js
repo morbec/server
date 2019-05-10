@@ -9,27 +9,26 @@ router.post('/projects', (req, res) => {
     user: req.user._id,
     issue: [],
   })
-    .then((response) => {
-      res.json(response)
+    .then((project) => {
+      res.json(project)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 
 router.get('/projects', (req, res) => {
   Project.find({})
-    .then((project) => {
-      res.json(project)
+    .then((projects) => {
+      res.json(projects)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 
 router.get('/projects/:id', (req, res) => {
   Project.findById(req.params.id)
-    // .populate("issues")
     .populate({
       path: 'issues',
       populate: {
@@ -40,29 +39,27 @@ router.get('/projects/:id', (req, res) => {
       res.json(project)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 
 router.put('/projects/:id', (req, res) => {
-  Project.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => {
-      // .status() optional
-      res.status(200).json({ message: 'ok' })
+  Project.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((updatedProject) => {
+      res.json(updatedProject)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 
 router.delete('/projects/:id', (req, res) => {
   Project.findByIdAndDelete(req.params.id)
     .then(() => {
-      // .status() optional
-      res.status(200).json({ message: 'ok' })
+      res.status(200).json({ message: 'Projected deleted successfully' })
     })
     .catch((error) => {
-      res.json(error)
+      res.json({ message: `Database error: ${error}` })
     })
 })
 

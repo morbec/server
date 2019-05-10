@@ -36,7 +36,7 @@ router.post('/issues', (req, res) => {
         res.json(data)
       })
       .catch((error) => {
-        res.json(error)
+        res.status(error.code).json({ message: `Database error: ${error}` })
       })
   })
 })
@@ -48,17 +48,17 @@ router.get('/issues/:id', (req, res) => {
       res.json(issue)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 
 router.put('/issues/:id', (req, res) => {
-  Issue.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => {
-      res.status(200).json({ message: 'ok' })
+  Issue.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .then((updatedIssue) => {
+      res.status(200).json(updatedIssue)
     })
     .catch((error) => {
-      res.json(error)
+      res.status(error.code).json({ message: `Database error: ${error}` })
     })
 })
 
