@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-
 const Issue = require('../models/Issue')
 const Project = require('../models/Project')
 
@@ -44,7 +43,7 @@ router.post('/issues', (req, res) => {
 
 router.get('/issues/:id', (req, res) => {
   Issue.findById(req.params.id)
-    .populate('project')
+    .populate('comments')
     .then((issue) => {
       res.json(issue)
     })
@@ -52,4 +51,15 @@ router.get('/issues/:id', (req, res) => {
       res.json(error)
     })
 })
+
+router.put('/issues/:id', (req, res) => {
+  Issue.findByIdAndUpdate(req.params.id, req.body)
+    .then(() => {
+      res.status(200).json({ message: 'ok' })
+    })
+    .catch((error) => {
+      res.json(error)
+    })
+})
+
 module.exports = router
